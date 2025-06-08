@@ -1,0 +1,937 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Trendy Threads - Outfit Builder</title>
+  
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet" />
+  
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+
+  <style>
+    /* Reset & Base Styles */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background-color: #f8f9fa;
+      color: #333;
+      line-height: 1.6;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      padding: 30px 15px;
+    }
+    
+    .container {
+      max-width: 1000px;
+      width: 100%;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 5px 30px rgba(0, 0, 0, 0.08);
+      overflow: hidden;
+    }
+    
+    h1, h2, h3 {
+      font-family: 'Playfair Display', serif;
+      color: #2c3e50;
+    }
+    
+    h1 {
+      font-size: 2.2rem;
+      margin-bottom: 20px;
+      text-align: center;
+      padding: 25px 0;
+      background-color: #2c3e50;
+      color: white;
+    }
+    
+    h2 {
+      font-size: 1.5rem;
+      margin-bottom: 20px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid #e0e0e0;
+    }
+    
+    h3 {
+      font-size: 1.3rem;
+      margin: 25px 0 15px;
+    }
+    
+    /* Section Styling */
+    .section {
+      padding: 25px 30px;
+      border-bottom: 1px solid #e0e0e0;
+    }
+    
+    .section:last-child {
+      border-bottom: none;
+    }
+    
+    /* Form Elements */
+    label {
+      display: block;
+      margin: 15px 0 8px;
+      font-weight: 600;
+      color: #2c3e50;
+    }
+    
+    select, input[type="text"], input[type="email"] {
+      width: 100%;
+      padding: 12px 15px;
+      border-radius: 6px;
+      border: 1px solid #ddd;
+      font-size: 1rem;
+      font-family: 'Montserrat', sans-serif;
+      transition: all 0.3s ease;
+      background-color: white;
+    }
+    
+    select:focus, input[type="text"]:focus, input[type="email"]:focus {
+      border-color: #3498db;
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+    }
+    
+    .hidden {
+      display: none !important;
+    }
+    
+    /* Button Styling */
+    button {
+      padding: 12px 25px;
+      background-color: #3498db;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+    
+    button:hover {
+      background-color: #2980b9;
+      transform: translateY(-2px);
+    }
+    
+    button.secondary {
+      background-color: #95a5a6;
+    }
+    
+    button.secondary:hover {
+      background-color: #7f8c8d;
+    }
+    
+    button.danger {
+      background-color: #e74c3c;
+    }
+    
+    button.danger:hover {
+      background-color: #c0392b;
+    }
+    
+    /* Image Preview */
+    .image-preview {
+      width: 100%;
+      max-width: 300px;
+      height: auto;
+      margin: 20px auto;
+      border-radius: 8px;
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+      display: block;
+    }
+    
+    /* Cart Styling */
+    #cart {
+      margin: 20px 0;
+      border: 1px solid #e0e0e0;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    
+    .cart-item {
+      padding: 15px;
+      border-bottom: 1px solid #e0e0e0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .cart-item:last-child {
+      border-bottom: none;
+    }
+    
+    .cart-item-details {
+      flex: 1;
+    }
+    
+    .cart-item-price {
+      font-weight: 600;
+      color: #2c3e50;
+      margin-left: 15px;
+    }
+    
+    .remove-item {
+      margin-left: 15px;
+      color: #e74c3c;
+      cursor: pointer;
+      background: none;
+      border: none;
+      font-size: 1.1rem;
+    }
+    
+    /* Total Display */
+    #total {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: #2c3e50;
+    }
+    
+    /* Confirmation Styling */
+    #confirmation {
+      padding: 40px;
+      text-align: center;
+      background-color: #f8f9fa;
+      border-radius: 8px;
+      margin: 20px 0;
+    }
+    
+    #confirmation h2 {
+      color: #27ae60;
+      border-bottom: none;
+      margin-bottom: 15px;
+    }
+    
+    #confirmation p {
+      margin-bottom: 10px;
+    }
+    
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .container {
+        border-radius: 0;
+      }
+      
+      .section {
+        padding: 20px;
+      }
+      
+      h1 {
+        font-size: 1.8rem;
+        padding: 20px 0;
+      }
+      
+      h2 {
+        font-size: 1.3rem;
+      }
+    }
+    
+    /* Flex Utilities */
+    .flex-row {
+      display: flex;
+      gap: 15px;
+    }
+    
+    /* Alert Styling */
+    .alert {
+      padding: 12px 15px;
+      border-radius: 6px;
+      margin-bottom: 20px;
+      font-weight: 500;
+    }
+    
+    .alert-success {
+      background-color: #d4edda;
+      color: #155724;
+    }
+    
+    .alert-danger {
+      background-color: #f8d7da;
+      color: #721c24;
+    }
+    
+    /* Price Tag */
+    .price-tag {
+      display: inline-block;
+      background-color: #f1c40f;
+      color: #2c3e50;
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-weight: 600;
+      margin-left: 5px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h1><i class="fas fa-tshirt"></i> Trendy Threads Outfit Builder</h1>
+
+    <div class="section">
+      <h2><i class="fas fa-store"></i> Select Outlet</h2>
+      <select id="outlet">
+        <option value="Lahore">Lahore</option>
+        <option value="Islamabad">Islamabad</option>
+        <option value="Karachi">Karachi</option>
+        <option value="Faisalabad">Faisalabad</option>
+      </select>
+    </div>
+
+    <div class="section">
+      <h2><i class="fas fa-vest"></i> Build Your Outfit</h2>
+      
+      <div class="flex-row">
+        <div style="flex: 1;">
+          <label>Collection:</label>
+          <select id="collection" onchange="handleCollectionChange()">
+            <option value="">Select Collection</option>
+            <option value="Men">Men</option>
+            <option value="Women">Women</option>
+          </select>
+
+          <label>Brand:</label>
+          <select id="brand">
+            <option value="">Select Brand</option>
+            <option value="J.">J.</option>
+            <option value="Sapphire">Sapphire</option>
+            <option value="Nishat">Nishat</option>
+            <option value="Breeze">Breeze</option>
+            <option value="Gul Ahmad">Gul Ahmad</option>
+          </select>
+
+          <label>Season:</label>
+          <select id="season" onchange="handleSeasonChange()">
+            <option value="">Select Season</option>
+            <option value="Summer">Summer</option>
+            <option value="Winter">Winter</option>
+          </select>
+
+          <label>Style:</label>
+          <select id="style" onchange="handleStyleChange()">
+            <option value="">Select Style</option>
+            <option value="Eastern">Eastern</option>
+            <option value="Western">Western</option>
+          </select>
+
+          <!-- For Western: Category (Pant/Shirt/Outerwear) -->
+          <label id="category-label" class="hidden">Category:</label>
+          <select id="category" class="hidden" onchange="handleCategoryChange()">
+            <option value="">Select Category</option>
+            <option value="Pant">Pant</option>
+            <option value="Shirt">Shirt</option>
+            <option value="Outerwear">Outerwear</option>
+          </select>
+
+          <!-- For Western: Type (depends on Category) -->
+          <label id="type-label" class="hidden">Type:</label>
+          <select id="type" class="hidden" onchange="updatePrice()">
+            <option value="">Select Type</option>
+          </select>
+
+          <!-- For Eastern Men (fabric choices) -->
+          <label id="fabric-label" class="hidden">Fabric:</label>
+          <select id="fabric" class="hidden" onchange="updatePrice()">
+            <option value="">Select Fabric</option>
+          </select>
+
+          <!-- For Eastern Women: Suit Type (2PC, 3PC) -->
+          <label id="suit-type-label" class="hidden">Suit Type:</label>
+          <select id="suit-type" class="hidden" onchange="handleSuitTypeChange()">
+            <option value="">Select Suit Type</option>
+            <option value="2PC">2PC Suit</option>
+            <option value="3PC">3PC Suit</option>
+          </select>
+
+          <!-- For Eastern Women: Fabric after Suit Type -->
+          <label id="fabric-women-label" class="hidden">Fabric:</label>
+          <select id="fabric-women" class="hidden" onchange="updatePrice()">
+            <option value="">Select Fabric</option>
+          </select>
+
+          <label>Size:</label>
+          <select id="size">
+            <option value="">Select Size</option>
+            <option value="S">Small (S)</option>
+            <option value="M">Medium (M)</option>
+            <option value="L">Large (L)</option>
+            <option value="XL">Extra Large (XL)</option>
+          </select>
+
+          <label>Color:</label>
+          <select id="color">
+            <option value="">Select Color</option>
+            <option value="Red">Red</option>
+            <option value="Blue">Blue</option>
+            <option value="Green">Green</option>
+            <option value="Yellow">Yellow</option>
+            <option value="Black">Black</option>
+            <option value="White">White</option>
+            <option value="Brown">Brown</option>
+            <option value="Purple">Purple</option>
+            <option value="Pink">Pink</option>
+            <option value="Orange">Orange</option>
+          </select>
+        </div>
+        
+        <div style="flex: 1; display: flex; flex-direction: column; align-items: center;">
+          <div id="price-display" style="font-size: 1.2rem; font-weight: 600; margin-top: 10px;">
+            Price: <span id="current-price">Rs. 0</span>
+          </div>
+        </div>
+      </div>
+
+      <button onclick="addItem()" style="margin-top: 20px; width: 100%;">
+        <i class="fas fa-cart-plus"></i> Add to Cart
+      </button>
+    </div>
+
+    <div class="section">
+      <h2><i class="fas fa-shopping-cart"></i> Your Shopping Cart</h2>
+      <div id="cart">
+        <div class="alert alert-success" style="text-align: center;">
+          Your cart is empty. Add items to get started.
+        </div>
+      </div>
+      <h3>Total: Rs. <span id="total">0</span></h3>
+      <button onclick="checkout()" style="width: 100%; margin-top: 15px;">
+        <i class="fas fa-credit-card"></i> Proceed to Checkout
+      </button>
+    </div>
+
+    <div id="checkout-section" class="section hidden">
+      <h2><i class="fas fa-user"></i> Customer Information</h2>
+      <label for="name">Full Name:</label>
+      <input type="text" id="name" placeholder="Enter your full name" required>
+      
+      <label for="address">Delivery Address:</label>
+      <input type="text" id="address" placeholder="Enter your complete address" required>
+      
+      <label for="phone">Phone Number:</label>
+      <input type="text" id="phone" placeholder="Enter your phone number" required>
+      
+      <label for="email">Email Address:</label>
+      <input type="email" id="email" placeholder="Enter your email address" required>
+      
+      <div class="flex-row" style="margin-top: 25px;">
+        <button onclick="confirmOrder()" style="flex: 1;">
+          <i class="fas fa-check-circle"></i> Place Order
+        </button>
+        <button class="secondary" onclick="cancelCheckout()" style="flex: 1;">
+          <i class="fas fa-times-circle"></i> Cancel
+        </button>
+      </div>
+    </div>
+
+    <div id="confirmation" class="section hidden">
+      <h2 style="color: #27ae60; text-align: center;"><i class="fas fa-check-circle"></i> Order Confirmed!</h2>
+      <div style="text-align: center; margin-bottom: 20px;">
+        <i class="fas fa-check-circle" style="font-size: 4rem; color: #27ae60;"></i>
+      </div>
+      <p style="text-align: center; font-size: 1.1rem; margin-bottom: 15px;">
+        Thank you for shopping with Trendy Threads!
+      </p>
+      <div style="background-color: #f8f9fa; padding: 15px; border-radius: 8px; margin: 20px 0;">
+        <p><strong>Order Summary:</strong></p>
+        <div id="order-summary"></div>
+        <p style="margin-top: 10px;"><strong>Total:</strong> Rs. <span id="final-total">0</span></p>
+      </div>
+      <p style="text-align: center; margin-top: 20px;">
+        Your order will be delivered within <strong>3-5 working days</strong> to the provided address.
+      </p>
+      <button onclick="newOrder()" style="width: 100%; margin-top: 20px;">
+        <i class="fas fa-plus-circle"></i> Start New Order
+      </button>
+    </div>
+  </div>
+
+  <script>
+    // Updated prices according to provided PHP constants
+    const prices = {
+      // Western items
+      "Jeans Pant": 2500,
+      "Baggy Pant": 2500,
+      "T-Shirt": 2000,
+      "Polo Shirt": 2000,
+      "Hoodie": 4000,
+      "Sweater": 3000,
+      "Jacket": 6000,
+      "Shawl": 2000,
+      
+      // Eastern items
+      "2PC Suit": 3000,
+      "3PC Suit": 4500,
+      "Men's Suit": 4000,
+      
+      // Fabrics (prices are included in the suit prices)
+      "Wash & Wear": 0,
+      "Cotton": 0,
+      "Texture Wash & Wear": 0,
+      "Khaddar": 0,
+      "Marina": 0,
+      "Blended Cotton Wool": 0,
+      "Cotton Cambric": 0,
+      "Arabic Lawn": 0,
+      "Velvet": 0,
+      "Linen": 0,
+      "Rashmi": 0
+    };
+
+    // Western category > types mapping
+    const westernTypes = {
+      Pant: ["Jeans Pant", "Baggy Pant"],
+      Shirt: ["T-Shirt", "Polo Shirt"],
+      Outerwear: ["Hoodie", "Sweater", "Jacket", "Shawl"]
+    };
+
+    // Eastern Men summer fabrics
+    const menEasternSummerFabrics = ["Wash & Wear", "Cotton", "Texture Wash & Wear"];
+
+    // Eastern Men winter fabrics
+    const menEasternWinterFabrics = ["Khaddar", "Marina", "Blended Cotton Wool"];
+
+    // Women Eastern summer fabrics (after suit type)
+    const womenEasternSummerFabrics = ["Cotton Cambric", "Cotton", "Arabic Lawn"];
+
+    // Women Eastern winter fabrics (after suit type)
+    const womenEasternWinterFabrics = ["Velvet", "Linen", "Marina", "Rashmi"];
+
+    // State variables
+    let cartItems = [];
+    let currentPrice = 0;
+
+    // Utility: clear and hide elements
+    function clearAndHide(...elements) {
+      elements.forEach(el => {
+        el.innerHTML = "";
+        el.classList.add("hidden");
+      });
+    }
+
+    // Handle Collection change
+    function handleCollectionChange() {
+      resetAllDependentFields();
+      updatePrice();
+    }
+
+    function resetAllDependentFields() {
+      // Reset all dynamic selects to default empty state
+      document.getElementById('style').value = "";
+      document.getElementById('season').value = "";
+      document.getElementById('category').value = "";
+      document.getElementById('type').innerHTML = "";
+      document.getElementById('type').classList.add('hidden');
+      document.getElementById('type-label').classList.add('hidden');
+      document.getElementById('category').classList.add('hidden');
+      document.getElementById('category-label').classList.add('hidden');
+      document.getElementById('fabric').innerHTML = '<option value="">Select Fabric</option>';
+      document.getElementById('fabric').classList.add('hidden');
+      document.getElementById('fabric-label').classList.add('hidden');
+      document.getElementById('suit-type').value = "";
+      document.getElementById('suit-type').classList.add('hidden');
+      document.getElementById('suit-type-label').classList.add('hidden');
+      document.getElementById('fabric-women').innerHTML = '<option value="">Select Fabric</option>';
+      document.getElementById('fabric-women').classList.add('hidden');
+      document.getElementById('fabric-women-label').classList.add('hidden');
+    }
+
+    // Handle Season change (needed for men eastern fabrics and women eastern fabric sets)
+    function handleSeasonChange() {
+      updateDependentDropdowns();
+    }
+
+    // Handle Style change
+    function handleStyleChange() {
+      updateDependentDropdowns();
+    }
+
+    // Update dependent dropdowns based on collection, style, season
+    function updateDependentDropdowns() {
+      const collection = document.getElementById('collection').value;
+      const style = document.getElementById('style').value;
+      const season = document.getElementById('season').value;
+
+      clearAndHide(
+        document.getElementById('category'),
+        document.getElementById('category-label'),
+        document.getElementById('type'),
+        document.getElementById('type-label'),
+        document.getElementById('fabric'),
+        document.getElementById('fabric-label'),
+        document.getElementById('suit-type'),
+        document.getElementById('suit-type-label'),
+        document.getElementById('fabric-women'),
+        document.getElementById('fabric-women-label')
+      );
+
+      if (!collection || !style || !season) {
+        updatePrice();
+        return;
+      }
+
+      if (style === "Western") {
+        // Show Category for Western men and women
+        document.getElementById('category').classList.remove('hidden');
+        document.getElementById('category-label').classList.remove('hidden');
+        document.getElementById('category').innerHTML = '<option value="">Select Category</option><option value="Pant">Pant</option><option value="Shirt">Shirt</option><option value="Outerwear">Outerwear</option>';
+      } else if (style === "Eastern") {
+        if (collection === "Men") {
+          // Eastern Men: show fabric directly depending on season
+          const fabricSelect = document.getElementById('fabric');
+          const fabricLabel = document.getElementById('fabric-label');
+          fabricSelect.innerHTML = '<option value="">Select Fabric</option>';
+          let fabrics = [];
+          if (season === "Summer") {
+            fabrics = menEasternSummerFabrics;
+          } else if (season === "Winter") {
+            fabrics = menEasternWinterFabrics;
+          }
+          fabrics.forEach(f => {
+            const option = document.createElement('option');
+            option.value = f;
+            option.textContent = f;
+            fabricSelect.appendChild(option);
+          });
+          fabricSelect.classList.remove('hidden');
+          fabricLabel.classList.remove('hidden');
+        } else if (collection === "Women") {
+          // Eastern Women: show suit type first, then fabric
+          document.getElementById('suit-type').classList.remove('hidden');
+          document.getElementById('suit-type-label').classList.remove('hidden');
+          document.getElementById('suit-type').innerHTML = '<option value="">Select Suit Type</option><option value="2PC">2PC Suit</option><option value="3PC">3PC Suit</option>';
+        }
+      }
+      updatePrice();
+    }
+
+    // Handle Category change for Western style
+    function handleCategoryChange() {
+      const category = document.getElementById('category').value;
+      const typeSelect = document.getElementById('type');
+      const typeLabel = document.getElementById('type-label');
+
+      if (!category) {
+        typeSelect.classList.add('hidden');
+        typeLabel.classList.add('hidden');
+        typeSelect.innerHTML = "";
+        updatePrice();
+        return;
+      }
+
+      // Populate type dropdown based on category
+      const types = westernTypes[category] || [];
+      typeSelect.innerHTML = '<option value="">Select Type</option>';
+      types.forEach(t => {
+        const option = document.createElement('option');
+        option.value = t;
+        option.textContent = t;
+        typeSelect.appendChild(option);
+      });
+      typeSelect.classList.remove('hidden');
+      typeLabel.classList.remove('hidden');
+
+      updatePrice();
+    }
+
+    // Handle Suit Type change for Eastern Women
+    function handleSuitTypeChange() {
+      const suitType = document.getElementById('suit-type').value;
+      const fabricWomenSelect = document.getElementById('fabric-women');
+      const fabricWomenLabel = document.getElementById('fabric-women-label');
+      const season = document.getElementById('season').value;
+
+      if (!suitType) {
+        fabricWomenSelect.classList.add('hidden');
+        fabricWomenLabel.classList.add('hidden');
+        fabricWomenSelect.innerHTML = '<option value="">Select Fabric</option>';
+        updatePrice();
+        return;
+      }
+
+      // Populate fabric based on season and suit type
+      let fabrics = [];
+      if (season === "Summer") {
+        fabrics = womenEasternSummerFabrics;
+      } else if (season === "Winter") {
+        fabrics = womenEasternWinterFabrics;
+      }
+      
+      fabricWomenSelect.innerHTML = '<option value="">Select Fabric</option>';
+      fabrics.forEach(f => {
+        const option = document.createElement('option');
+        option.value = f;
+        option.textContent = f;
+        fabricWomenSelect.appendChild(option);
+      });
+      fabricWomenSelect.classList.remove('hidden');
+      fabricWomenLabel.classList.remove('hidden');
+
+      updatePrice();
+    }
+
+    // Update Price based on selection
+    function updatePrice() {
+      const collection = document.getElementById('collection').value;
+      const style = document.getElementById('style').value;
+      const season = document.getElementById('season').value;
+
+      currentPrice = 0;
+
+      if (style === "Western") {
+        // Western: use Type selected
+        const type = document.getElementById('type').value;
+        if (type) {
+          currentPrice = prices[type] || 0;
+        }
+      } else if (style === "Eastern") {
+        if (collection === "Men") {
+          // Eastern Men: fixed price for Men's Suit
+          const fabric = document.getElementById('fabric').value;
+          if (fabric) {
+            currentPrice = 4000; // MEN_SUIT_PRICE
+          }
+        } else if (collection === "Women") {
+          // Eastern Women: suit type determines price
+          const suitType = document.getElementById('suit-type').value;
+          if (suitType) {
+            currentPrice = suitType === "2PC" ? 3000 : 4500; // WOMEN_2PC_PRICE or WOMEN_3PC_PRICE
+          }
+        }
+      }
+
+      // Update price display
+      document.getElementById('current-price').textContent = `Rs. ${currentPrice}`;
+    }
+
+    // Add item to cart
+    function addItem() {
+      const outlet = document.getElementById('outlet').value;
+      const collection = document.getElementById('collection').value;
+      const brand = document.getElementById('brand').value;
+      const season = document.getElementById('season').value;
+      const style = document.getElementById('style').value;
+      const size = document.getElementById('size').value;
+      const color = document.getElementById('color').value;
+
+      if (!collection || !brand || !season || !style || !size || !color) {
+        showAlert('Please fill all required fields before adding to cart.', 'danger');
+        return;
+      }
+
+      let description = `${collection} ${style}`;
+      let price = 0;
+      let itemType = '';
+
+      if (style === "Western") {
+        const category = document.getElementById('category').value;
+        const type = document.getElementById('type').value;
+        if (!category || !type) {
+          showAlert("Please select Category and Type for Western style.", 'danger');
+          return;
+        }
+        description += ` - ${category} - ${type}`;
+        price = prices[type] || 0;
+        itemType = type;
+      } else if (style === "Eastern") {
+        if (collection === "Men") {
+          const fabric = document.getElementById('fabric').value;
+          if (!fabric) {
+            showAlert("Please select Fabric for Men Eastern style.", 'danger');
+            return;
+          }
+          description += ` - Men's Suit - ${fabric}`;
+          price = 4000; // MEN_SUIT_PRICE
+          itemType = "Men's Suit";
+        } else if (collection === "Women") {
+          const suitType = document.getElementById('suit-type').value;
+          const fabricWomen = document.getElementById('fabric-women').value;
+          if (!suitType || !fabricWomen) {
+            showAlert("Please select Suit Type and Fabric for Women Eastern style.", 'danger');
+            return;
+          }
+          description += ` - ${suitType} Suit - ${fabricWomen}`;
+          price = suitType === "2PC" ? 3000 : 4500; // WOMEN_2PC_PRICE or WOMEN_3PC_PRICE
+          itemType = `${suitType} Suit`;
+        }
+      }
+
+      description += ` | Brand: ${brand} | Size: ${size} | Color: ${color} | Outlet: ${outlet}`;
+
+      // Add to cart
+      cartItems.push({
+        description,
+        price,
+        itemType,
+        size,
+        color,
+        brand,
+        outlet
+      });
+
+      // Update cart display
+      updateCart();
+      
+      // Show success message
+      showAlert('Item added to cart successfully!', 'success');
+      
+      // Reset form (except outlet)
+      document.getElementById('collection').value = '';
+      document.getElementById('brand').value = '';
+      document.getElementById('season').value = '';
+      document.getElementById('style').value = '';
+      resetAllDependentFields();
+      document.getElementById('size').value = '';
+      document.getElementById('color').value = '';
+      updatePrice();
+    }
+
+    // Update cart display
+    function updateCart() {
+      const cartDiv = document.getElementById('cart');
+      let total = 0;
+      
+      if (cartItems.length === 0) {
+        cartDiv.innerHTML = '<div class="alert alert-success" style="text-align: center;">Your cart is empty. Add items to get started.</div>';
+      } else {
+        let html = '';
+        cartItems.forEach((item, index) => {
+          total += item.price;
+          html += `
+            <div class="cart-item">
+              <div class="cart-item-details">
+                ${item.description}
+              </div>
+              <div class="cart-item-price">
+                Rs. ${item.price}
+              </div>
+              <button class="remove-item" onclick="removeItem(${index})">
+                <i class="fas fa-trash"></i>
+              </button>
+            </div>
+          `;
+        });
+        cartDiv.innerHTML = html;
+      }
+      
+      document.getElementById('total').textContent = total;
+    }
+
+    // Remove item from cart
+    function removeItem(index) {
+      cartItems.splice(index, 1);
+      updateCart();
+      showAlert('Item removed from cart.', 'success');
+    }
+
+    // Show alert message
+    function showAlert(message, type) {
+      const alertDiv = document.createElement('div');
+      alertDiv.className = `alert alert-${type}`;
+      alertDiv.textContent = message;
+      
+      const cartDiv = document.getElementById('cart');
+      cartDiv.insertBefore(alertDiv, cartDiv.firstChild);
+      
+      // Remove alert after 3 seconds
+      setTimeout(() => {
+        alertDiv.remove();
+      }, 3000);
+    }
+
+    // Proceed to checkout
+    function checkout() {
+      if (cartItems.length === 0) {
+        showAlert('Your cart is empty. Please add items before checkout.', 'danger');
+        return;
+      }
+      
+      document.querySelector('.section').classList.add('hidden');
+      document.getElementById('checkout-section').classList.remove('hidden');
+    }
+
+    // Cancel checkout
+    function cancelCheckout() {
+      document.getElementById('checkout-section').classList.add('hidden');
+      document.querySelector('.section').classList.remove('hidden');
+    }
+
+    // Confirm Order
+    function confirmOrder() {
+      const name = document.getElementById('name').value.trim();
+      const address = document.getElementById('address').value.trim();
+      const phone = document.getElementById('phone').value.trim();
+      const email = document.getElementById('email').value.trim();
+
+      if (!name || !address || !phone || !email) {
+        showAlert("Please fill all customer details.", 'danger');
+        return;
+      }
+
+      // Validate email format
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(email)) {
+        showAlert("Please enter a valid email address.", 'danger');
+        return;
+      }
+
+      // Validate phone number (simple validation)
+      if (phone.length < 10 || !/^\d+$/.test(phone)) {
+        showAlert("Please enter a valid phone number.", 'danger');
+        return;
+      }
+
+      // Prepare order summary
+      let orderSummary = '';
+      let orderTotal = 0;
+      
+      cartItems.forEach(item => {
+        orderSummary += `<p>${item.description} - Rs. ${item.price}</p>`;
+        orderTotal += item.price;
+      });
+      
+      document.getElementById('order-summary').innerHTML = orderSummary;
+      document.getElementById('final-total').textContent = orderTotal;
+
+      // Show confirmation
+      document.getElementById('checkout-section').classList.add('hidden');
+      document.getElementById('confirmation').classList.remove('hidden');
+      
+      // In a real application, you would send the order to the server here
+      console.log('Order placed:', {
+        customer: { name, address, phone, email },
+        items: cartItems,
+        total: orderTotal
+      });
+    }
+
+    // Start new order
+    function newOrder() {
+      // Reset everything
+      cartItems = [];
+      document.getElementById('name').value = '';
+      document.getElementById('address').value = '';
+      document.getElementById('phone').value = '';
+      document.getElementById('email').value = '';
+      
+      document.getElementById('confirmation').classList.add('hidden');
+      document.querySelector('.section').classList.remove('hidden');
+      
+      updateCart();
+    }
+
+    // Initialize
+    updatePrice();
+  </script>
+</body>
+</html>
